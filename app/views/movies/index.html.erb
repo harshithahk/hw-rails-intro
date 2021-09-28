@@ -6,9 +6,9 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th><a href=https://damp-sands-92655.herokuapp.com/>Movie Title</a></th>
+      <th><a id="title_header" onclick="return sortValues();" href=https://damp-sands-92655.herokuapp.com/>Movie Title</a></th>
       <th>Rating</th>
-      <th><a href=https://damp-sands-92655.herokuapp.com/>Release Date</a></th>
+      <th><a id="release_date_header" href=https://damp-sands-92655.herokuapp.com/>Release Date</a></th>
       <th>More Info</th>
     </tr>
   </thead>
@@ -32,3 +32,8 @@
   </tbody>
 </table>
 <%= link_to 'Add new movie', new_movie_path, :class => 'btn btn-primary' %>
+<script>
+  function sortValues() {
+    document.getElementById(".title_header").background-color = "yellow"; 
+}
+</script>
