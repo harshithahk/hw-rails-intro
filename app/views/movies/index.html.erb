@@ -8,7 +8,7 @@
     <tr>
       <th><a id="title_header" onclick="return sortValues();" href=https://damp-sands-92655.herokuapp.com/>Movie Title</a></th>
       <th>Rating</th>
-      <th><a id="release_date_header" href=https://damp-sands-92655.herokuapp.com/>Release Date</a></th>
+      <th><a id="release_date_header" onclick="return sortValues1();" href=https://damp-sands-92655.herokuapp.com/>Release Date</a></th>
       <th>More Info</th>
     </tr>
   </thead>
@@ -35,6 +35,10 @@
 <script>
   function sortValues() {
     document.getElementById("title_header").style.backgroundColor = "yellow"; 
+    return false;
+}
+function sortValues1() {
+    document.getElementById("release_date_header").style.backgroundColor = "yellow"; 
     return false;
 }
 </script>
