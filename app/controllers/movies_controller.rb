@@ -8,7 +8,18 @@ class MoviesController < ApplicationController
   
     def index
       @movies = Movie.all
+      # @movies = Movie.all
+      if params[:sort_by].to_s == 'title'
+        @title_sorting = 'hilite'
+        @movies = Movie.all.order(params[:sort_by])
+      elsif params[:sort_by].to_s == 'release_date'
+        @releasedate_sort = 'hilite'
+        @movies = Movie.all.order(params[:sort_by])
+      else
+        @movies = Movie.all
+      end
     end
+    
   
     def new
       # default: render 'new' template
@@ -44,4 +55,4 @@ class MoviesController < ApplicationController
     def movie_params
       params.require(:movie).permit(:title, :rating, :description, :release_date)
     end
-  end
+end
