@@ -7,18 +7,38 @@ class MoviesController < ApplicationController
     end
   
     def index
-      @movies = Movie.all
+      #@movies = Movie.all
       # @movies = Movie.all
-      if params[:sort_by].to_s == 'title'
-        @title_sorting = 'hilite'
-        @movies = Movie.all.order(params[:sort_by])
-      elsif params[:sort_by].to_s == 'release_date'
-        @releasedate_sort = 'hilite'
-        @movies = Movie.all.order(params[:sort_by])
+      #if params[:sort_by].to_s == 'title'
+      #  @title_sorting = 'hilite'
+      #  @movies = Movie.all.order(params[:sort_by])
+      #elsif params[:sort_by].to_s == 'release_date'
+      #  @releasedate_sort = 'hilite'
+      #  @movies = Movie.all.order(params[:sort_by])
+      #else
+      #  @movies = Movie.all
+      #end
+      #@movies = Movie.all
+      @all_ratings = Movie.ratings_avail
+      
+      unless params[:ratings].nil?
+        ratings_val = params[:ratings].keys
       else
-        @movies = Movie.all
+        ratings_val = @all_ratings
       end
-    end
+      @movies = Movie.where(rating:ratings_val)
+      @display_ratings = ratings_val
+      if params[:sort_by].to_s == 'title'
+        @movies = Movie.where(rating:ratings_val).order(:title)
+        @title_sorting = 'hilite'
+      elsif params[:sort_by].to_s == 'release_date'
+        @movies = Movie.where(rating:ratings_val).order(:release_date)
+        @releasedate_sort = 'hilite'
+      else
+        @movies = Movie.where(rating:ratings_val)
+      end
+      session[:ratings_to_show] = JSON.generate(ratings_val)
+    end 
     
   
     def new
