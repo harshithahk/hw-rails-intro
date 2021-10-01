@@ -7,37 +7,50 @@ class MoviesController < ApplicationController
     end
   
     def index
-      #@movies = Movie.all
-      # @movies = Movie.all
-      #if params[:sort_by].to_s == 'title'
-      #  @title_sorting = 'hilite'
-      #  @movies = Movie.all.order(params[:sort_by])
-      #elsif params[:sort_by].to_s == 'release_date'
-      #  @releasedate_sort = 'hilite'
-      #  @movies = Movie.all.order(params[:sort_by])
-      #else
-      #  @movies = Movie.all
-      #end
-      #@movies = Movie.all
-      @all_ratings = Movie.ratings_avail
       
-      unless params[:ratings].nil?
-        ratings_val = params[:ratings].keys
+      @all_ratings = Movie.ratings_avail
+      @all_ratings = Movie.mapping_data
+      if (request.referrer).nil?
+        session.clear
+      end
+      par_data = params[:ratings]
+      par_sort = params[:sort_by]
+      unless par_data.nil?
+        ratings_val = par_data.keys
       else
-        ratings_val = @all_ratings
+        unless (session[:ratings_to_show].nil? )
+          ratings_val = JSON.parse(session[:ratings_to_show])
+        else
+          ratings_val = @all_ratings
+        end
       end
       @movies = Movie.where(rating:ratings_val)
       @display_ratings = ratings_val
-      if params[:sort_by].to_s == 'title'
+      if par_sort
+        session[:sort_by] = par_sort
+        sorting_data = par_sort
+      elsif session[:sort_by]
+        sorting_data = session[:sort_by]
+      end
+      if sorting_data.to_s == 'title'
         @movies = Movie.where(rating:ratings_val).order(:title)
-        @title_sorting = 'hilite'
-      elsif params[:sort_by].to_s == 'release_date'
+        @highlighting = 'title'
+      elsif sorting_data.to_s == 'release_date'
         @movies = Movie.where(rating:ratings_val).order(:release_date)
-        @releasedate_sort = 'hilite'
+        @highlighting = 'release_date'
       else
         @movies = Movie.where(rating:ratings_val)
       end
+      
       session[:ratings_to_show] = JSON.generate(ratings_val)
+      session[:ratings] = par_data
+      
+      if(sorting_data.to_s == 'title')
+        @changes = 'bg-warning hilite'
+      elsif(sorting_data.to_s == 'release_date')
+        @changes = 'bg-warning hilite'
+      end
+      @sorting = sorting_data
     end 
     
   
