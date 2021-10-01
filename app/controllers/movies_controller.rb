@@ -10,9 +10,9 @@ class MoviesController < ApplicationController
       
       @all_ratings = Movie.ratings_avail
       @all_ratings = Movie.mapping_data
-      if (request.referrer).nil?
-        session.clear
-      end
+      #if (request.referrer).nil?
+      #  session.clear
+      #end
       par_data = params[:ratings]
       par_sort = params[:sort_by]
       unless par_data.nil?
